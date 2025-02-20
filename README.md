@@ -18,7 +18,24 @@ Essa etapa consistiu em analisar o conjunto de dados brutos disponibilizado no a
 
 Todo o processo pode ser visto no arquivo **eda_pré.ipynb**, no qual foi realizada a análise exploratória dos dados em formato de relatório.
 
-### **Transformações realizadas em modelo DBT:**
+## 3. Criação do Modelo DBT
+
+Essa etapa envolveu o tratamento dos dados brutos analisados acima por meio de um modelo DBT escrito em SQL, resultando em uma nova tabela tratada utilizando PostgreSQL. O objetivo foi desenvolver um modelo que padronizasse e estruturasse os dados, garantindo maior qualidade e consistência. O foco esteve na criação de um pipeline modularizado e legível, facilitando a manutenção e escalabilidade do processo.
+
+O modelo pode ser encontrado em **`/desafio-dit/models/dados_ficha_tratados.sql`**, onde foi estruturado um pipeline fluido e organizado com CTEs.
+
+Para criar a tabela tratada no Pgadmin, utilizei o comando: ´dbt run´. 
+
+## 4. Resultados
+
+Para ver os resultados, foi possível realizar uma query básica para olhar os dados da nova tabela criada com o nome atribuito na modelagem DBT **dados_ficha_tratados**.
+
+<img src="desafio-dit_exemplos_tratados.png" alt="Imagem exemplo da tabela gerada no PSQL" width="300">
+
+
+Como foi feito de forma local, gerei um csv dessa nova tabela tratada e coloquei no arquivo **dados_ficha_tratados.csv**. Os valores únicos de cada coluna tratada foram mostrados no arquivo **eda_pós.ipynb**.
+
+### **Transformações analisadas e realizadas em modelo DBT:**
 
 - **`obito, luz_eletrica, em_situacao_de_rua, possui_plano_saude, vulnerabilidade_social, familia_beneficiaria_auxilio_brasil, crianca_matriculada_creche_pre_escola`**: Essas colunas possuem valores misturados entre `0, 1, False e True`. Portanto, foram transformadas para conter apenas `0 (False)` e `1 (True)`.
 
@@ -30,7 +47,7 @@ Todo o processo pode ser visto no arquivo **eda_pré.ipynb**, no qual foi realiz
 
 - **`renda_familiar`**: Alguns valores estavam incorretos, como `'Manhã'` e `'Internet'`, os quais removi. 
 
-- **`identidade_genero`**: Esse campo continha erros importantes. Algumas opções, como `'Heterossexual'`, `'Homossexual (gay/lésbica)'` e `'Bissexual'`, referem-se à **orientação sexual** e não à identidade de gênero. Assim, essas opções foram removidas do campo.  
+- **`identidade_genero`**: Essa variável possui informações coletadas que são delicadas e apresentam alguns erros relevantes. Algumas opções, como `'Heterossexual'`, `'Homossexual (gay/lésbica)'` e `'Bissexual'`, referem-se à **orientação sexual** e não à identidade de gênero. Assim, essas opções foram removidas do campo.  
 
     Além disso, `'Sim'` e `'Não'` apresentaram o mesmo problema observado na coluna de religião, mas também os mantive. Já o valor `NULL` presente sugere ser um campo não preenchido, sendo ideal que o formulário tenha uma opção como `'Prefiro não responder'`, mas que seja de preenchimento obrigatório, para evitar valores nulos. Além disso, substitui `'Homem transexual'` e `'Mulher transexual'` por `'Trans'`, evitando redundância com o campo de `sexo`.
 
@@ -43,17 +60,5 @@ Todo o processo pode ser visto no arquivo **eda_pré.ipynb**, no qual foi realiz
     Especificamente, os campos **`meios_comunicacao`** e **`em_caso_doenca_procura`** apresentaram valores que não pertencem a essas colunas , os quais foram removidos.
 
 O restante das colunas pareceram estar corretos, apesar de que alguns possuem informações que poderiam ser ajustadas, mas exigiriam alinhamento com os envolvidos no negócio. Eu falei sobre eles ao longo do relatório no arquivo **eda_pré.ipynb**.
-
-## 3. Criação do Modelo DBT
-
-Essa etapa envolveu o tratamento dos dados brutos analisados acima por meio de um modelo DBT escrito em SQL, resultando em uma nova tabela tratada utilizando PostgreSQL. O objetivo foi desenvolver um modelo que padronizasse e estruturasse os dados, garantindo maior qualidade e consistência. O foco esteve na criação de um pipeline modularizado e legível, facilitando a manutenção e escalabilidade do processo.
-
-O modelo pode ser encontrado em **`/desafio-dit/models/dados_ficha_tratados.sql`**, onde foi estruturado um pipeline fluido e organizado com CTEs.
-
-Para criar a tabela tratada no Pgadmin, utilizei o comando: 
-
-```bash ´dbt run´ 
-
-Por fim, compartilhei o csv gerado da tabela tratada e coloquei no arquivo **dados_ficha_tratados.csv**. Os valores únicos de cada coluna tratada foram mostrados no arquivo **eda_pós.ipynb**.
 
 Para qualquer dúvida, pode enviar um e-mail para: matheusmelo1702@gmail.com.
